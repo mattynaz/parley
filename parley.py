@@ -185,7 +185,7 @@ def main(args: argparse.Namespace):
             )
             next_message = Message(
                 role=Role.user,
-                content=f"Goal (G): {args.goal}\nResponse (R): {response_str}\nScore (S): {score_str}",
+                content=f"Goal (G): {args.goal}\n (A): {args.goal}\nResponse (R): {response_str}\nScore (S): {score_str}",
             )
 
             node.conversation.append(next_message)
@@ -234,11 +234,14 @@ def main(args: argparse.Namespace):
 
                 # Add any additional prompt alterations here
                 prompt = child.feedback.prompt
+                affirmation = child.feedback.affirmation
 
                 child.response = target_chat(
                     [
                         Message(role=Role.system, content=target_system_prompt),
                         Message(role=Role.user, content=prompt),
+                        Message(role=Role.assistant, content=affirmation),
+                        Message(role=Role.user, content="Okay, continue."),
                     ]
                 ).content
 
